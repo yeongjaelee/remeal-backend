@@ -41,9 +41,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'rest_framework.authtoken',
     'corsheaders',
     "graphene_django",
-    'test'
+    'test',
+    'user'
 ]
 
 MIDDLEWARE = [
@@ -58,6 +64,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = {
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+}
+
 ROOT_URLCONF = 'vercel_app.urls'
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -66,7 +80,7 @@ CORS_ALLOW_CREDENTIALS = False
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [str(BASE_DIR.joinpath('templates'))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,7 +95,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'vercel_app.wsgi.app'
 
-
+AUTH_USER_MODEL = 'user.User'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 # Note: Django modules for using databases are not support in serverless
@@ -150,3 +164,15 @@ EMAIL_HOST_USER = 'yeongjae.blocket@gmail.com' 	 # 우리가 사용할 Gmail
 EMAIL_HOST_PASSWORD = 'gchmmcxoeuptxftz'		 # 우리가 사용할 Gmail p
 EMAIL_USE_TLS = True			 # TLS 보안 설정
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER	 # 응답 메일 관련 설정
+EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
+
+ACCOUNT_AUTHENTICATION_BACKEND = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+ACCOUNT_EMAIL_SUBJECT_PREFIX = '이메일인증'
+
+
+SITE_ID = 1

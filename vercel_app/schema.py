@@ -1,13 +1,16 @@
 import graphene
 
 import test.schema
+import user.schema
 
 
-class Query(test.schema.Query):
+class Query(test.schema.Query,
+            user.schema.Query):
     pass
 
 
-class Mutation(test.schema.Mutation):
+class Mutation(test.schema.Mutation,
+               user.schema.Mutation):
     pass
 
 

@@ -9,7 +9,7 @@ from user.methods.message import message
 from user.models import User
 
 
-class TestMutation(graphene.Mutation):
+class CheckUser(graphene.Mutation):
     class Arguments:
         email = graphene.String()
 
@@ -23,9 +23,8 @@ class TestMutation(graphene.Mutation):
             token = user.token
             user.token = None
             user.save()
-            return TestMutation(success=True,token=token)
+            return CheckUser(success=True, token=token)
         except ObjectDoesNotExist:
-
             subject = 'Verify your email'
             user = User.objects.create_user(
                 email=email,
@@ -48,6 +47,5 @@ class TestMutation(graphene.Mutation):
                 fail_silently=False,
                 html_message=html_message
             )
-
-        return TestMutation(success=True)
+            return CheckUser(success=True)
 
