@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 
 from user.methods.message import message
 from user.models import User
+from graphql_jwt.shortcuts import get_token
 
 
 class CheckUser(graphene.Mutation):
@@ -18,10 +19,13 @@ class CheckUser(graphene.Mutation):
 
     @classmethod
     def mutate(cls, _, __, email):
+        print(email)
+        print('hello')
         try:
             user = User.objects.get(email=email)
-            token = user.token
             user.token = None
+            token = get_token(user)
+            print(token)
             user.save()
             return CheckUser(success=True, token=token)
         except ObjectDoesNotExist:
@@ -47,5 +51,6 @@ class CheckUser(graphene.Mutation):
                 fail_silently=False,
                 html_message=html_message
             )
-            return CheckUser(success=True)
+            print(11)
+            return CheckUser(success=True, token=None)
 
