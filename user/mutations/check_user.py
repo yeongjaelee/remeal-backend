@@ -4,6 +4,8 @@ import graphene
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMessage, send_mail
 from django.template.loader import render_to_string
+from graphql_jwt.decorators import login_required
+from graphql_jwt.refresh_token.shortcuts import create_refresh_token
 
 from user.methods.message import message
 from user.models import User
@@ -16,18 +18,25 @@ class CheckUser(graphene.Mutation):
 
     success = graphene.Boolean()
     token = graphene.String()
-
+    refresh_token = graphene.String()
+    email = graphene.String()
+    message = graphene.String()
     @classmethod
     def mutate(cls, _, __, email):
         print(email)
         print('hello')
         try:
             user = User.objects.get(email=email)
-            user.token = None
-            token = get_token(user)
-            print(token)
-            user.save()
-            return CheckUser(success=True, token=token)
+            if user.is_active:
+                token = get_token(user)
+                refresh_token_instance = create_refresh_token(user)
+                refresh_token = refresh_token_instance.token
+                user.refresh_token = refresh_token
+                print(user.refresh_token)
+                user.save()
+                return CheckUser(success=True, token=token, refresh_token=refresh_token, email=email, message="로그인완료")
+            else:
+                return CheckUser(success=False)
         except ObjectDoesNotExist:
             subject = 'Verify your email'
             user = User.objects.create_user(
@@ -52,5 +61,5 @@ class CheckUser(graphene.Mutation):
                 html_message=html_message
             )
             print(11)
-            return CheckUser(success=True, token=None)
+            return CheckUser(success=False, token=None)
 

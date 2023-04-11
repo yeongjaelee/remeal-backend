@@ -47,8 +47,10 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rest_framework.authtoken',
+    "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
     'corsheaders',
     "graphene_django",
+    'django_filters',
     'test',
     'user'
 ]
@@ -134,7 +136,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 GRAPHQL_JWT = {
     "JWT_VERIFY_EXPIRATION": True,
-    "JWT_EXPIRATION_DELTA": timedelta(minutes=1),
+    "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+    "JWT_ALLOW_ARGUMENT": True,
+    "JWT_EXPIRATION_DELTA": timedelta(days=1000000),
+    "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=1000000),
+    "JWT_SECRET_KEY": 're-meal-test',
+    'JWT_REUSE_REFRESH_TOKENS': True,
+    'JWT_HIDE_TOKEN_FIELDS': True,
 }
 
 # Internationalization
