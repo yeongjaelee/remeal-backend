@@ -51,8 +51,8 @@ INSTALLED_APPS = [
     'corsheaders',
     "graphene_django",
     'django_filters',
-    'test',
-    'user'
+    'user',
+    'post'
 ]
 
 MIDDLEWARE = [
@@ -134,16 +134,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-GRAPHQL_JWT = {
-    "JWT_VERIFY_EXPIRATION": True,
-    "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
-    "JWT_ALLOW_ARGUMENT": True,
-    "JWT_EXPIRATION_DELTA": timedelta(days=1000000),
-    "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=1000000),
-    "JWT_SECRET_KEY": 're-meal-test',
-    'JWT_REUSE_REFRESH_TOKENS': True,
-    'JWT_HIDE_TOKEN_FIELDS': True,
-}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

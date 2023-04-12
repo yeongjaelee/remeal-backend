@@ -1,13 +1,12 @@
+import datetime
 import os
-
+import time
 import graphene
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMessage, send_mail
 from django.template.loader import render_to_string
-from graphql_jwt.decorators import login_required
 from graphql_jwt.refresh_token.shortcuts import create_refresh_token
-
-from user.methods.message import message
+import jwt
 from user.models import User
 from graphql_jwt.shortcuts import get_token
 
@@ -44,13 +43,17 @@ class CheckUser(graphene.Mutation):
                 password=None,
                 is_active=False
             )
-            verification_token = user.generate_verification_token()
-            user.token = verification_token
+            token = jwt.encode({'exp': datetime.datetime.utcnow() + datetime.timedelta(days=5),
+                                'user_id': user.id}, 're-meal', algorithm="HS256")
+            refresh_token = jwt.encode({'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30),
+                                        'user_id': user.id,
+                                        'iat': int(time.time())}, 're-meal', algorithm="HS256")
             user.save()
-            confirmation_url = f"http://127.0.0.1:8000/confirm-email/?token={verification_token}&user_id={user.id}"
+            confirmation_url = f"http://127.0.0.1:8000/confirm-email/?token={token}&refresh_token={refresh_token}&user_id={user.id}"
             html_message = render_to_string('../templates/message.html', {'verification_link': confirmation_url,
                                                                           'user_id': user.id,
-                                                                          'verification_token': verification_token})
+                                                                          'token': token,
+                                                                          'refresh_token': refresh_token})
             # Send the email
             send_mail(
                 subject,
@@ -60,6 +63,5 @@ class CheckUser(graphene.Mutation):
                 fail_silently=False,
                 html_message=html_message
             )
-            print(11)
             return CheckUser(success=False, token=None)
 

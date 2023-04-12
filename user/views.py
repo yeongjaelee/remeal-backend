@@ -10,18 +10,12 @@ def confirm_email(request):
     try:
         token = request.GET.get('token')
         user_id = request.GET.get('user_id')
+        refresh_token = request.GET.get('refresh_token')
         user = User.objects.get(pk=user_id)
-        if token == user.token:
-            user.token = None
-            user.is_active = True
-            token = get_token(user)
-            refresh_token_instance = create_refresh_token(user)
-            refresh_token = refresh_token_instance.token
-            user.refresh_token = refresh_token
-            user.save()
-            print(refresh_token)
-            print(token)
-            print(user.email)
-            return redirect('http://localhost:3000?token={}&refreshToken={}&email={}'.format(token,refresh_token,user.email))
+        user.is_active = True
+        user.refresh_token = refresh_token
+        user.save()
+
+        return redirect('http://localhost:3000?token={}&refreshToken={}'.format(token, refresh_token))
     except ObjectDoesNotExist:
         return redirect('https://www.naver.com/')

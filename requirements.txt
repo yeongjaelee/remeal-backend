@@ -7,3 +7,5 @@ django_cors_headers==3.14.0
 django_graphql_jwt ==0.3.4
 django-filter==23.1
 graphene~=3.2.2
+pyjwt==2.6.0
+Pillow==9.5.0
