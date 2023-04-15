@@ -1,6 +1,5 @@
 import graphene
 
-from test.types.post_type import PostType
 from user.models import User
 from user.mutations.check_refresh_token import CheckRefreshToken
 from user.mutations.check_token import CheckToken
@@ -10,7 +9,6 @@ from user.types.UserType import UserType
 
 
 class Query(graphene.ObjectType):
-    test_query = graphene.Field(PostType)
     users = graphene.List(UserType, email_contain = graphene.String() )
     @staticmethod
     def resolve_users(_, info, email_contain):
