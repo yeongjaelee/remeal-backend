@@ -8,7 +8,11 @@ from post.types.post_type import PostType
 
 class Query(graphene.ObjectType):
     post = graphene.Field(PostType, id=graphene.Int())
+    post_list = graphene.List(PostType)
 
+    @staticmethod
+    def resolve_post_list(_, __):
+        return Post.objects.all()
     @staticmethod
     def resolve_post(_, info, id):
         post = Post.objects.get(pk=id)
