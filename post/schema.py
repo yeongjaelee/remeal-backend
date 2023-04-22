@@ -15,9 +15,9 @@ class Query(graphene.ObjectType):
         limit = kwargs.get('limit')
         tag_name = kwargs.get('tag_name')
         if tag_name:
-            return Post.objects.filter(tags__name__exact=tag_name)[:limit]
+            return set(Post.objects.filter(tags__name__icontains=tag_name)[:limit])
         else:
-            return Post.objects.all()[:limit]
+            return set(Post.objects.all()[:limit])
     @staticmethod
     def resolve_post(_, info, id):
         post = Post.objects.get(pk=id)
