@@ -9,15 +9,17 @@ from post.types.post_type import PostType
 class Query(graphene.ObjectType):
     post = graphene.Field(PostType, id=graphene.Int())
     post_list = graphene.List(PostType, limit=graphene.Int())
-
+    all_post = graphene.Int()
     @staticmethod
     def resolve_post_list(_, __, limit):
         return Post.objects.all()[:limit]
     @staticmethod
     def resolve_post(_, info, id):
         post = Post.objects.get(pk=id)
-        print(post.title)
         return post
+    @staticmethod
+    def resolve_all_post(_, info):
+        return Post.objects.count()
 
 class Mutation(graphene.ObjectType):
     upload_image = UploadImage.Field()
