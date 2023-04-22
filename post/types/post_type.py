@@ -3,6 +3,7 @@ from graphene_django import DjangoObjectType
 
 from post.models import Post
 from post.types.post_image_type import PostImageType
+from post.types.tag_type import TagType
 
 
 class PostType(DjangoObjectType):
@@ -14,6 +15,11 @@ class PostType(DjangoObjectType):
     date_created_year = graphene.String()
     date_created_month = graphene.String()
     date_created_day = graphene.String()
+    tags_on_post = graphene.List(TagType)
+
+    @staticmethod
+    def resolve_tags_on_post(root, _):
+        return root.tags.all()
     @staticmethod
     def resolve_first_post_image(root, _):
         first_post_image = root.images.all().order_by('id').first()
