@@ -14,10 +14,12 @@ class Query(graphene.ObjectType):
     def resolve_post_list(_, __, **kwargs):
         limit = kwargs.get('limit')
         tag_name = kwargs.get('tag_name')
+        print(tag_name)
         if tag_name:
-            return set(Post.objects.filter(tags__name__icontains=tag_name)[:limit])
+            posts = Post.objects.filter(tags__name__icontains=tag_name).order_by('date_created').distinct()[:limit]
+            return posts
         else:
-            return set(Post.objects.all()[:limit])
+            return Post.objects.all().order_by('date_created')[:limit]
     @staticmethod
     def resolve_post(_, info, id):
         post = Post.objects.get(pk=id)
