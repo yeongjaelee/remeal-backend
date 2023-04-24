@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 
-from post.models import Post, PostImage, Tag
+from post.models import Post, PostImage, Tag, Comment
 
 
 # Register your models here.
@@ -16,3 +16,7 @@ class PostImageAdmin(admin.ModelAdmin):
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'post', 'comment')

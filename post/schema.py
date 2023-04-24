@@ -1,8 +1,10 @@
 import graphene
 
 from post.models import Post
+from post.mutations.create_comment import CreateComment
 from post.mutations.create_post import CreatePost
 from post.mutations.upload_image import UploadImage
+from post.types.comment_type import CommentType
 from post.types.post_type import PostType
 
 
@@ -10,6 +12,14 @@ class Query(graphene.ObjectType):
     post = graphene.Field(PostType, id=graphene.Int())
     post_list = graphene.List(PostType, limit=graphene.Int(), tag_name=graphene.String())
     all_post = graphene.Int()
+    comments = graphene.List(CommentType, post_id=graphene.Int())
+
+    @staticmethod
+    def resolve_comments(_, __, post_id):
+        post = Post.objects.get(pk=post_id)
+        comments = post.comments.all()
+        print(comments)
+        return comments
     @staticmethod
     def resolve_post_list(_, __, **kwargs):
         limit = kwargs.get('limit')
@@ -31,6 +41,6 @@ class Query(graphene.ObjectType):
 class Mutation(graphene.ObjectType):
     upload_image = UploadImage.Field()
     create_post = CreatePost.Field()
-
+    create_comment = CreateComment.Field()
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

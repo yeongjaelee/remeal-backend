@@ -2,6 +2,7 @@ import graphene
 from graphene_django import DjangoObjectType
 
 from post.models import Post
+from post.types.comment_type import CommentType
 from post.types.post_image_type import PostImageType
 from post.types.tag_type import TagType
 
@@ -16,7 +17,10 @@ class PostType(DjangoObjectType):
     date_created_month = graphene.String()
     date_created_day = graphene.String()
     tags_on_post = graphene.List(TagType)
-
+    comments = graphene.List(CommentType)
+    @staticmethod
+    def resolve_comments(root,_):
+        return root.comments.all()
     @staticmethod
     def resolve_tags_on_post(root, _):
         return root.tags.all()
