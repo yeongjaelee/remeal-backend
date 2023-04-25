@@ -17,7 +17,7 @@ class Query(graphene.ObjectType):
     @staticmethod
     def resolve_comments(_, __, post_id):
         post = Post.objects.get(pk=post_id)
-        comments = post.comments.all()
+        comments = post.comments.all().order_by('-date_created')
         print(comments)
         return comments
     @staticmethod

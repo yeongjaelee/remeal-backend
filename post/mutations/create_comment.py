@@ -28,5 +28,5 @@ class CreateComment(graphene.Mutation):
             print(2)
             print(user_id)
         comment = Comment.objects.create(post=post, user_id=user_id, comment=comment)
-        comments = comment.post.comments.all()
+        comments = comment.post.comments.all().order_by('-date_created')
         return CreateComment(success=True, is_writer=is_writer, comments=comments)
