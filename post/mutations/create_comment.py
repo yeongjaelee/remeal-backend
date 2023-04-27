@@ -21,12 +21,8 @@ class CreateComment(graphene.Mutation):
         user_id = decoded_token['user_id']
         if user_id == post.user.id:
             is_writer = True
-            print(1)
-            print(user_id)
         else:
             is_writer = False
-            print(2)
-            print(user_id)
         comment = Comment.objects.create(post=post, user_id=user_id, comment=comment)
         comments = comment.post.comments.all().order_by('-date_created')
         return CreateComment(success=True, is_writer=is_writer, comments=comments)

@@ -10,7 +10,7 @@ from post.types.post_type import PostType
 
 class Query(graphene.ObjectType):
     post = graphene.Field(PostType, id=graphene.Int())
-    post_list = graphene.List(PostType, limit=graphene.Int(), tag_name=graphene.String())
+    post_list = graphene.List(PostType, limit=graphene.Int(), offset=graphene.Int(), tag_name=graphene.String())
     all_post = graphene.Int()
     comments = graphene.List(CommentType, post_id=graphene.Int())
 
@@ -23,13 +23,13 @@ class Query(graphene.ObjectType):
     @staticmethod
     def resolve_post_list(_, __, **kwargs):
         limit = kwargs.get('limit')
+        offset = kwargs.get('offset')
         tag_name = kwargs.get('tag_name')
-        print(tag_name)
         if tag_name:
-            posts = Post.objects.filter(tags__name__icontains=tag_name).order_by('date_created').distinct()[:limit]
+            posts = Post.objects.filter(tags__name__icontains=tag_name).order_by('date_created').distinct()[offset:limit]
             return posts
         else:
-            return Post.objects.all().order_by('date_created')[:limit]
+            return Post.objects.all().order_by('id')[offset:limit]
     @staticmethod
     def resolve_post(_, info, id):
         post = Post.objects.get(pk=id)

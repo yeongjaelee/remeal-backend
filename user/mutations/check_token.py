@@ -29,6 +29,7 @@ class CheckToken(graphene.Mutation):
                 return CheckToken(success=True, refresh_token=refresh_token)
             return CheckToken(success=True)
         except jwt.ExpiredSignatureError as e:
+
             expired_token = e
             user_id = expired_token['user_id']
             user = User.objects.get(pk=user_id)
