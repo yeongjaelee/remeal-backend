@@ -41,7 +41,8 @@ class CheckUser(graphene.Mutation):
             user = User.objects.create_user(
                 email=email,
                 password=None,
-                is_active=False
+                is_active=False,
+                username=email
             )
             token = jwt.encode({'exp': datetime.datetime.utcnow() + datetime.timedelta(days=5),
                                 'user_id': user.id}, 're-meal', algorithm="HS256")
