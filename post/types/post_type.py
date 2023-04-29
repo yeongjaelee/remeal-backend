@@ -1,8 +1,10 @@
 import graphene
+import jwt
 from graphene_django import DjangoObjectType
 
-from post.models import Post
+from post.models import Post, LikeOnPost
 from post.types.comment_type import CommentType
+from post.types.like_on_post_type import LikeOnPostType
 from post.types.post_image_type import PostImageType
 from post.types.tag_type import TagType
 
@@ -20,6 +22,18 @@ class PostType(DjangoObjectType):
     date_created_minute = graphene.String()
     tags_on_post = graphene.List(TagType)
     comments = graphene.List(CommentType)
+    like_number = graphene.Int()
+    is_like_user = graphene.Field(LikeOnPostType, token=graphene.String())
+    @staticmethod
+    def resolve_is_like_user(root, info,token):
+        decoded_token = jwt.decode(token, 're-meal', algorithms="HS256")
+        user_id = decoded_token['user_id']
+        like_on_post = LikeOnPost.objects.filter(user_id=user_id, post_id=root.id).first()
+
+        return like_on_post
+    @staticmethod
+    def resolve_like_number(root, _):
+        return root.likes.filter(is_like=True).count()
     @staticmethod
     def resolve_comments(root,_):
         return root.comments.all()

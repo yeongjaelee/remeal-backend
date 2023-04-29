@@ -9,7 +9,7 @@ from user.types.UserType import UserType
 
 
 class Query(graphene.ObjectType):
-    users = graphene.List(UserType, email_contain = graphene.String() )
+    users = graphene.List(UserType, email_contain = graphene.String())
     @staticmethod
     def resolve_users(_, info, email_contain):
         user = info.context.user
