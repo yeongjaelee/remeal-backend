@@ -2,7 +2,7 @@ import graphene
 
 class SendConde(graphene.Mutation):
     class Arguments:
-        number = graphene.String()
+        email = graphene.String()
 
     success = graphene.Boolean()
 

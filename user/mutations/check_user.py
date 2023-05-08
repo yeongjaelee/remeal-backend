@@ -38,11 +38,12 @@ class CheckUser(graphene.Mutation):
                 return CheckUser(success=False)
         except ObjectDoesNotExist:
             subject = 'Verify your email'
+            username, _, _ = email.partition('@')
             user = User.objects.create_user(
                 email=email,
                 password=None,
                 is_active=False,
-                username=email
+                username=username
             )
             token = jwt.encode({'exp': datetime.datetime.utcnow() + datetime.timedelta(days=5),
                                 'user_id': user.id}, 're-meal', algorithm="HS256")
