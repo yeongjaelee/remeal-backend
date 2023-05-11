@@ -19,6 +19,7 @@ class CheckToken(graphene.Mutation):
         try:
             decoded_token = jwt.decode(token, 're-meal', algorithms="HS256")
             refresh_decoded_token = jwt.decode(refresh_token, 're-meal', algorithms="HS256")
+            print(refresh_decoded_token['iat'])
             if refresh_decoded_token['iat'] < time.time() - 1296000:
                 refresh_token = jwt.encode({'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30),
                                             'user_id': decoded_token['user_id'],
@@ -29,7 +30,6 @@ class CheckToken(graphene.Mutation):
                 return CheckToken(success=True, refresh_token=refresh_token)
             return CheckToken(success=True)
         except jwt.ExpiredSignatureError as e:
-
             expired_token = e
             user_id = expired_token['user_id']
             user = User.objects.get(pk=user_id)
