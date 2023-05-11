@@ -6,7 +6,10 @@ from user.mutations.check_refresh_token import CheckRefreshToken
 from user.mutations.check_token import CheckToken
 from user.mutations.check_user import CheckUser
 from user.mutations.get_token import GetToken
+from user.mutations.profile.delete_user_image import DeleteUserImage
 from user.mutations.profile.user_content_mutation import UserContentMutation
+from user.mutations.profile.user_image_mutation import UserImageMutation
+from user.mutations.profile.user_name_update import UserNameUpdate
 from user.types.UserType import UserType
 
 
@@ -32,5 +35,7 @@ class Mutation(graphene.ObjectType):
     check_refresh_token = CheckRefreshToken.Field()
     check_token = CheckToken.Field()
     user_content_mutation = UserContentMutation.Field()
-
+    user_image_mutation = UserImageMutation.Field()
+    delete_user_image = DeleteUserImage.Field()
+    user_name_update = UserNameUpdate.Field()
 schema = graphene.Schema(query=Query, mutation=Mutation)

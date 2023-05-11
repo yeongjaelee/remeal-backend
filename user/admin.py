@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from user.models import User, UserContent
+from user.models import User, UserContent, UserImage
 
 
 # Register your models here.
@@ -10,4 +10,8 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(UserContent)
 class UserContentAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(UserImage)
+class UserImageAdmin(admin.ModelAdmin):
     pass
