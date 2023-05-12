@@ -7,6 +7,7 @@ from post.mutations.like_on_post_mutation import LikeOnPostMutation
 from post.mutations.upload_image import UploadImage
 from post.types.comment_type import CommentType
 from post.types.post_type import PostType
+from user.models import User
 
 
 class Query(graphene.ObjectType):
@@ -14,7 +15,13 @@ class Query(graphene.ObjectType):
     post_list = graphene.List(PostType, limit=graphene.Int(), offset=graphene.Int(), tag_name=graphene.String())
     all_post = graphene.Int()
     comments = graphene.List(CommentType, post_id=graphene.Int())
+    my_posts = graphene.List(PostType, email=graphene.String())
 
+    @staticmethod
+    def resolve_my_posts(_, __, email):
+        user = User.objects.get(email=email)
+        posts = Post.objects.filter(user=user)
+        return posts
     @staticmethod
     def resolve_comments(_, __, post_id):
         post = Post.objects.get(pk=post_id)
