@@ -16,7 +16,12 @@ from user.types.UserType import UserType
 class Query(graphene.ObjectType):
     users = graphene.List(UserType, email_contain=graphene.String())
     user = graphene.Field(UserType, token=graphene.String())
+    get_user_by_email = graphene.Field(UserType, email=graphene.String())
 
+    @staticmethod
+    def resolve_get_user_by_email(_, __, email):
+        user = User.objects.get(email=email)
+        return user
     @staticmethod
     def resolve_user(_, __, token):
         decoded_token = jwt.decode(token, 're-meal', algorithms="HS256")
