@@ -12,16 +12,16 @@ from user.models import User
 
 class Query(graphene.ObjectType):
     post = graphene.Field(PostType, id=graphene.Int(), token=graphene.String())
-    post_list = graphene.List(PostType, limit=graphene.Int(), offset=graphene.Int(), tag_name=graphene.String())
+    post_list = graphene.List(PostType, limit=graphene.Int(), offset=graphene.Int(), tag_name=graphene.String(), email=graphene.String())
     all_post = graphene.Int()
     comments = graphene.List(CommentType, post_id=graphene.Int())
     my_posts = graphene.List(PostType, email=graphene.String())
 
-    @staticmethod
-    def resolve_my_posts(_, __, email):
-        user = User.objects.get(email=email)
-        posts = Post.objects.filter(user=user)
-        return posts
+    # @staticmethod
+    # def resolve_my_posts(_, __, ):
+    #     user = User.objects.get(email=email)
+    #     posts = Post.objects.filter(user=user)
+    #     return posts
     @staticmethod
     def resolve_comments(_, __, post_id):
         post = Post.objects.get(pk=post_id)
@@ -33,11 +33,20 @@ class Query(graphene.ObjectType):
         limit = kwargs.get('limit')
         offset = kwargs.get('offset')
         tag_name = kwargs.get('tag_name')
+        email = kwargs.get('email')
+
         if tag_name:
-            posts = Post.objects.filter(tags__name__exact=tag_name).distinct().order_by('id')[offset:limit]
-            return posts
+            if email:
+                posts = Post.objects.filter(tags__name__exact=tag_name, user__email=email).distinct().order_by('id')[offset:limit]
+                return posts
+            else:
+                posts = Post.objects.filter(tags__name__exact=tag_name).distinct().order_by('id')[offset:limit]
+                return posts
         else:
-            return Post.objects.all().order_by('id')[offset:limit]
+            if email:
+                return Post.objects.filter(user__email=email).order_by('id')[offset:limit]
+            else:
+                return Post.objects.all().order_by('id')[offset:limit]
 
     @staticmethod
     def resolve_post(_, info, id):
