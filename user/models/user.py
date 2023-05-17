@@ -25,4 +25,5 @@ class User(AbstractUser):
         self.save()
         return token
 
-
+    class Meta:
+        db_table = 'user'
