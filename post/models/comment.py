@@ -9,3 +9,6 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
     comment = models.CharField(max_length=255, null=True)
     date_created = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'comment'
