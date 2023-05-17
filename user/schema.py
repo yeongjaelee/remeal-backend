@@ -6,6 +6,7 @@ from user.mutations.check_refresh_token import CheckRefreshToken
 from user.mutations.check_token import CheckToken
 from user.mutations.check_user import CheckUser
 from user.mutations.get_token import GetToken
+from user.mutations.kakao_login import KakaoLogin
 from user.mutations.profile.delete_user_image import DeleteUserImage
 from user.mutations.profile.user_content_mutation import UserContentMutation
 from user.mutations.profile.user_image_mutation import UserImageMutation
@@ -43,4 +44,5 @@ class Mutation(graphene.ObjectType):
     user_image_mutation = UserImageMutation.Field()
     delete_user_image = DeleteUserImage.Field()
     user_name_update = UserNameUpdate.Field()
+    kakao_login = KakaoLogin.Field()
 schema = graphene.Schema(query=Query, mutation=Mutation)
