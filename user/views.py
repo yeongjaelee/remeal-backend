@@ -1,3 +1,4 @@
+import jwt
 import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
@@ -5,7 +6,7 @@ from django.shortcuts import redirect
 from django.views import View
 from graphql_jwt.refresh_token.shortcuts import create_refresh_token
 from graphql_jwt.shortcuts import get_token
-
+import datetime, time
 from user.models import User
 
 
@@ -48,8 +49,14 @@ def kakao_info(request):
     user_info = requests.get('https://kapi.kakao.com/v2/user/me', headers={'Authorization': f'Bearer ${access_token}'}).json()
     email = user_info['kakao_account']['email']
     user = User.objects.filter(email=email).first()
+    token = jwt.encode({'exp': datetime.datetime.utcnow() + datetime.timedelta(days=5),
+                        'user_id': user.id}, 're-meal', algorithm="HS256")
+    refresh_token = jwt.encode({'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30),
+                                'user_id': user.id,
+                                'iat': int(time.time())}, 're-meal', algorithm="HS256")
     if user:
         user.is_active = True
+        user.refresh_token = refresh_token
     else:
         username, _, _ = email.partition('@')
         user = User.objects.create_user(
@@ -58,9 +65,10 @@ def kakao_info(request):
             is_active=True,
             username=username
         )
+        user.refresh_token = refresh_token
+    user_email_first = user.email[0]
+    user.save()
 
-    ## 토큰 작업해야됨
-
-    return redirect('http://localhost:3000')
+    return redirect('http://localhost:3000?token={}&refreshToken={}&userEmailFirst={}'.format(token, refresh_token,user_email_first))
 
 
