@@ -1,5 +1,6 @@
 import graphene
 import jwt
+from graphql_jwt.decorators import login_required
 
 from user.models import User
 from user.mutations.check_refresh_token import CheckRefreshToken
@@ -18,7 +19,13 @@ class Query(graphene.ObjectType):
     users = graphene.List(UserType, email_contain=graphene.String())
     user = graphene.Field(UserType, token=graphene.String())
     get_user_by_email = graphene.Field(UserType, email=graphene.String())
+    me = graphene.Field(UserType)
 
+    @staticmethod
+    @login_required
+    def resolve_me(_, info, **kwargs):
+        print(info.context.user)
+        return info.context.user
     @staticmethod
     def resolve_get_user_by_email(_, __, email):
         user = User.objects.get(email=email)
