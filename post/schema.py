@@ -4,6 +4,7 @@ from post.models import Post
 from post.mutations.create_comment import CreateComment
 from post.mutations.create_post import CreatePost
 from post.mutations.like_on_post_mutation import LikeOnPostMutation
+from post.mutations.update_post import UpdatePost
 from post.mutations.upload_image import UploadImage
 from post.types.comment_type import CommentType
 from post.types.post_type import PostType
@@ -61,6 +62,7 @@ class Query(graphene.ObjectType):
 class Mutation(graphene.ObjectType):
     upload_image = UploadImage.Field()
     create_post = CreatePost.Field()
+    update_post = UpdatePost.Field()
     create_comment = CreateComment.Field()
     like_on_post_mutation = LikeOnPostMutation.Field()
 

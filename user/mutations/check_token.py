@@ -3,6 +3,8 @@ import jwt
 import time
 import datetime
 
+from graphql_jwt.decorators import login_required
+
 from user.models import User
 
 
@@ -15,7 +17,7 @@ class CheckToken(graphene.Mutation):
     token = graphene.String()
     refresh_token = graphene.String()
     @classmethod
-    def mutate(cls, _, __, token, refresh_token):
+    def mutate(cls, _, info, token, refresh_token):
         try:
             decoded_token = jwt.decode(token, 're-meal', algorithms="HS256")
             refresh_decoded_token = jwt.decode(refresh_token, 're-meal', algorithms="HS256")
@@ -30,8 +32,8 @@ class CheckToken(graphene.Mutation):
                 return CheckToken(success=True, refresh_token=refresh_token)
             return CheckToken(success=True)
         except jwt.ExpiredSignatureError as e:
-            expired_token = e
-            user_id = expired_token['user_id']
+            decoded_expired_token = jwt.decode(token, 're-meal', algorithms="HS256", options={"verify_signature": False})
+            user_id = decoded_expired_token['user_id']
             user = User.objects.get(pk=user_id)
             if user.refresh_token == refresh_token:
                 token = jwt.encode({'exp': datetime.datetime.utcnow() + datetime.timedelta(days=5),

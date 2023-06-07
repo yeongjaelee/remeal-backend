@@ -1,11 +1,13 @@
 import graphene
 import jwt
+from graphql_jwt.decorators import login_required
 
 from user.models import User
 from user.mutations.check_refresh_token import CheckRefreshToken
 from user.mutations.check_token import CheckToken
 from user.mutations.check_user import CheckUser
 from user.mutations.get_token import GetToken
+from user.mutations.kakao_login import KakaoLogin
 from user.mutations.profile.delete_user_image import DeleteUserImage
 from user.mutations.profile.user_content_mutation import UserContentMutation
 from user.mutations.profile.user_image_mutation import UserImageMutation
@@ -17,7 +19,13 @@ class Query(graphene.ObjectType):
     users = graphene.List(UserType, email_contain=graphene.String())
     user = graphene.Field(UserType, token=graphene.String())
     get_user_by_email = graphene.Field(UserType, email=graphene.String())
+    me = graphene.Field(UserType)
 
+    @staticmethod
+    @login_required
+    def resolve_me(_, info, **kwargs):
+        print(info.context.user)
+        return info.context.user
     @staticmethod
     def resolve_get_user_by_email(_, __, email):
         user = User.objects.get(email=email)
@@ -43,4 +51,5 @@ class Mutation(graphene.ObjectType):
     user_image_mutation = UserImageMutation.Field()
     delete_user_image = DeleteUserImage.Field()
     user_name_update = UserNameUpdate.Field()
+    kakao_login = KakaoLogin.Field()
 schema = graphene.Schema(query=Query, mutation=Mutation)

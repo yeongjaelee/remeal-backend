@@ -24,6 +24,16 @@ class PostType(DjangoObjectType):
     comments = graphene.List(CommentType)
     like_number = graphene.Int()
     is_like_user = graphene.Field(LikeOnPostType, token=graphene.String())
+    is_mine = graphene.Boolean(token=graphene.String())
+
+    @staticmethod
+    def resolve_is_mine(root, __, token):
+        decoded_token = jwt.decode(token, 're-meal', algorithms="HS256")
+        user_id = decoded_token['user_id']
+        if root.user.id == user_id:
+            return True
+        else:
+            return False
     @staticmethod
     def resolve_is_like_user(root, info,token):
         decoded_token = jwt.decode(token, 're-meal', algorithms="HS256")
