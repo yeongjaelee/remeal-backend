@@ -144,12 +144,12 @@ AUTH_USER_MODEL = 'user.User'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': '-',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'database-1.csnxoburupwd.ap-northeast-2.rds.amazonaws.com',
-        'PORT': 5432,
+        'HOST': 'postgres.csnxoburupwd.ap-northeast-2.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
