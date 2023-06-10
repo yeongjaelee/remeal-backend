@@ -1,0 +1,14 @@
+Django==4.1.3
+graphene-django==3.0.0
+psycopg2==2.9.5
+django-allauth==0.53.1
+dj-rest-auth==3.0.0
+django_cors_headers==3.14.0
+django_graphql_jwt ==0.3.4
+django-filter==23.1
+graphene~=3.2.2
+pyjwt==2.6.0
+Pillow==9.5.0
+graphene-file-upload == 1.3.0
+cloudinary~=1.32.0
+requests==2.30.0
