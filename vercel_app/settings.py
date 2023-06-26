@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     "graphene_django",
     'django_filters',
     'user',
-    'post'
+    'post',
+    'sslserver',
 ]
 
 MIDDLEWARE = [
@@ -92,6 +93,11 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 # CSRF_TRUSTED_ORIGINS = [
 #     'http://localhost:3000',
 #     'http://127.0.0.1:8000',
