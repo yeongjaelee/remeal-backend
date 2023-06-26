@@ -27,10 +27,11 @@ SECRET_KEY = 'django-insecure-=cldztbc4jg&xl0!x673!*v2_=p$$eu)=7*f#d0#zs$44xx-h^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app',
-                 'test.api.re-meal.com',
-                 '3.38.85.232',
-                 'https://www.re-meal.com']
+# ALLOWED_HOSTS = ['.vercel.app',
+#                  'test.api.re-meal.com',
+#                  '3.38.85.232',
+#                  'https://www.re-meal.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
