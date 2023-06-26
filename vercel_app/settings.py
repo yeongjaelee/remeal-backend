@@ -92,18 +92,18 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:8000',
-    '"https://kauth.kakao.com"',
-    'https://www.re-meal.com/']
-
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000",
-    "http://127.0.0.1:8000",
-    "https://kauth.kakao.com",
-    'https://www.re-meal.com'
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://localhost:3000',
+#     'http://127.0.0.1:8000',
+#     '"https://kauth.kakao.com"',
+#     'https://www.re-meal.com/']
+#
+# CORS_ORIGIN_WHITELIST = [
+#     "http://localhost:3000",
+#     "http://127.0.0.1:8000",
+#     "https://kauth.kakao.com",
+#     'https://www.re-meal.com'
+# ]
 CORS_ALLOW_METHODS = [
     'GET',
     'POST',
