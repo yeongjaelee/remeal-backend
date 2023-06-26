@@ -30,7 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['.vercel.app',
                  'test.api.re-meal.com',
                  '3.38.85.232',
-                 'https://www.re-meal.com/']
+                 'https://www.re-meal.com']
 
 
 # Application definition
