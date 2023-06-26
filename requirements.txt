@@ -12,4 +12,4 @@ Pillow==9.5.0
 graphene-file-upload == 1.3.0
 cloudinary~=1.32.0
 requests==2.30.0
-django-sslserver==0.22
+# django-sslserver==0.22
