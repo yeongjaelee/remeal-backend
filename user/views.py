@@ -53,13 +53,14 @@ def kakao_info(request):
     user_info = requests.get('https://kapi.kakao.com/v2/user/me', headers={'Authorization': f'Bearer ${access_token}'}).json()
     email = user_info['kakao_account']['email']
     user = User.objects.filter(email=email).first()
-    token = jwt.encode({'exp': datetime.datetime.utcnow() + datetime.timedelta(days=5),
-                        'user_id': user.id}, 're-meal', algorithm="HS256")
-    refresh_token = jwt.encode({'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30),
-                                'user_id': user.id,
-                                'iat': int(time.time())}, 're-meal', algorithm="HS256")
+
     if user:
         user.is_active = True
+        token = jwt.encode({'exp': datetime.datetime.utcnow() + datetime.timedelta(days=5),
+                            'user_id': user.id}, 're-meal', algorithm="HS256")
+        refresh_token = jwt.encode({'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30),
+                                    'user_id': user.id,
+                                    'iat': int(time.time())}, 're-meal', algorithm="HS256")
         user.refresh_token = refresh_token
     else:
         username, _, _ = email.partition('@')
@@ -69,6 +70,11 @@ def kakao_info(request):
             is_active=True,
             username=username
         )
+        token = jwt.encode({'exp': datetime.datetime.utcnow() + datetime.timedelta(days=5),
+                            'user_id': user.id}, 're-meal', algorithm="HS256")
+        refresh_token = jwt.encode({'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30),
+                                    'user_id': user.id,
+                                    'iat': int(time.time())}, 're-meal', algorithm="HS256")
         user.refresh_token = refresh_token
     user_email_first = user.email[0]
     user.save()
