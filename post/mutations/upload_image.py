@@ -20,5 +20,5 @@ class UploadImage(graphene.Mutation):
         image_file = InMemoryUploadedFile(image_data, None, 'image.jpg', 'image/jpeg', image_data.getbuffer().nbytes, None)
         saved_file_name = default_storage.save(image_file.name, image_file)
         url = default_storage.url(saved_file_name)
-
+        print(url)
         return UploadImage(url=url, success=True)
