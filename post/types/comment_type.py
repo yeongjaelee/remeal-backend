@@ -16,4 +16,5 @@ class CommentType(DjangoObjectType):
     def resolve_user_image(root, _):
         print(1)
         user_image = UserImage.objects.filter(user=root.user).first()
+        print(user_image.image)
         return user_image
