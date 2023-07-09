@@ -17,7 +17,7 @@ class CheckUser(graphene.Mutation):
     message = graphene.String()
     @classmethod
     def mutate(cls, _, __, email):
-        user = User.objects.filter(email=email, is_active=True).first()
+        user = User.objects.filter(email=email).first()
         if user:
             pass
         else:
