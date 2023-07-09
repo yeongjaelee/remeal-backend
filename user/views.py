@@ -20,9 +20,9 @@ def confirm_email(request):
         user.is_active = True
         user.refresh_token = refresh_token
         user.save()
-        return redirect('http://localhost:3000?token={}&refreshToken={}&userEmailFirst={}'.format(token, refresh_token,user_email_first))
+        return redirect('https://www.re-meal.com/?token={}&refreshToken={}&userEmailFirst={}'.format(token, refresh_token,user_email_first))
     except ObjectDoesNotExist:
-        return redirect('http://localhost:3000')
+        return redirect('https://www.re-meal.com')
 
 
 class kakao_view(View):

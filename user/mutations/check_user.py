@@ -17,7 +17,7 @@ class CheckUser(graphene.Mutation):
     message = graphene.String()
     @classmethod
     def mutate(cls, _, __, email):
-        user = User.objects.filter(email=email).first()
+        user = User.objects.filter(email=email, is_active=True).first()
         if user:
             pass
         else:
@@ -34,7 +34,7 @@ class CheckUser(graphene.Mutation):
         refresh_token = jwt.encode({'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30),
                                     'user_id': user.id,
                                     'iat': int(time.time())}, 're-meal', algorithm="HS256")
-        confirmation_url = f"https://test.api.re-meal.com/confirm-email/?token={token}&refresh_token={refresh_token}&user_id={user.id}"
+        confirmation_url = f"https://dev.re-meal.com/confirm-email/?token={token}&refresh_token={refresh_token}&user_id={user.id}"
         html_message = render_to_string('../templates/message.html', {'verification_link': confirmation_url,
                                                                       'user_id': user.id,
                                                                       'token': token,
