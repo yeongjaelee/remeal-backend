@@ -31,7 +31,7 @@ DEBUG = True
 #                  'test.api.re-meal.com',
 #                  '3.38.85.232',
 #                  'https://www.re-meal.com']
-ALLOWED_HOSTS = ['https://www.re-meal.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
