@@ -72,19 +72,6 @@ MIDDLEWARE = [
 
 ]
 
-
-# CORS_ALLOWED_HEADERS = [
-#     'accept',
-#     'accept-encoding',
-#     'authorization',
-#     'content-type',
-#     'dnt',
-#     'origin',
-#     'user-agent',
-#     'x-csrftoken',
-#     'x-requested-with',
-#     'access-control-allow-origin'
-# ]
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'access-control-allow-origin',
     'access-control-allow-credentials',
@@ -93,24 +80,11 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = ['https://*.re-meal.com', 'https://*.127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://www.re-meal.com', 'https://*.127.0.0.1']
+CORS_ALLOWED_ORIGINS = [
+    '*',
+]
 
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# SECURE_SSL_REDIRECT = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
-# CSRF_TRUSTED_ORIGINS = [
-#     'http://localhost:3000',
-#     'http://127.0.0.1:8000',
-#     '"https://kauth.kakao.com"',
-#     'https://www.re-meal.com/']
-#
-# CORS_ORIGIN_WHITELIST = [
-#     "http://localhost:3000",
-#     "http://127.0.0.1:8000",
-#     "https://kauth.kakao.com",
-#     'https://www.re-meal.com'
-# ]
 CORS_ALLOW_METHODS = [
     'GET',
     'POST',
@@ -118,6 +92,9 @@ CORS_ALLOW_METHODS = [
     'PATCH',
     'DELETE',
     'OPTIONS',
+]
+CORS_ALLOWED_HEADERS = [
+    'Content-Type',
 ]
 
 AUTHENTICATION_BACKENDS = {
