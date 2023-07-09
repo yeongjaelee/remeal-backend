@@ -30,7 +30,7 @@ class kakao_view(View):
         print(1111)
         client_id = 'f6b986215c4dc13b37c8ca0e4e57ad26'
         kakao_auth_id = "https://kauth.kakao.com/oauth/authorize?response_type=code"
-        redirect_uri = "http://127.0.0.1:8000/kakao-info"
+        redirect_uri = "https://dev.re-meal.com/kakao-info"
         print(request)
         print(22222)
         return redirect(f'{kakao_auth_id}&client_id={client_id}&redirect_uri={redirect_uri}')
@@ -45,7 +45,7 @@ def kakao_info(request):
     data = {
         'grant_type': 'authorization_code',
         'client_id': 'f6b986215c4dc13b37c8ca0e4e57ad26',
-        'redirection_uri': "http://127.0.0.1:8000/kakao-info",
+        'redirection_uri': "https://dev.re-meal.com/kakao-info",
         'code': code
     }
     token_response = requests.post('https://kauth.kakao.com/oauth/token', data=data)
@@ -73,7 +73,7 @@ def kakao_info(request):
     user_email_first = user.email[0]
     user.save()
 
-    return redirect('http://localhost:3000?token={}&refreshToken={}&userEmailFirst={}'.format(token, refresh_token,user_email_first))
+    return redirect('https://www.re-meal.com?token={}&refreshToken={}&userEmailFirst={}'.format(token, refresh_token,user_email_first))
 
 def kakao_info_admin(request):
     print('admin 페이지입니다')
@@ -86,7 +86,7 @@ def kakao_info_admin(request):
     data = {
         'grant_type': 'authorization_code',
         'client_id': 'f6b986215c4dc13b37c8ca0e4e57ad26',
-        'redirection_uri': "http://127.0.0.1:8000/kakao-info",
+        'redirection_uri': "https://dev.re-meal.com/kakao-info",
         'code': code
     }
     token_response = requests.post('https://kauth.kakao.com/oauth/token', data=data)
@@ -114,6 +114,6 @@ def kakao_info_admin(request):
     user_email_first = user.email[0]
     user.save()
 
-    return redirect('http://localhost:3000?token={}&refreshToken={}&userEmailFirst={}'.format(token, refresh_token,user_email_first))
+    return redirect('https://www.re-meal.com?token={}&refreshToken={}&userEmailFirst={}'.format(token, refresh_token,user_email_first))
 
 
