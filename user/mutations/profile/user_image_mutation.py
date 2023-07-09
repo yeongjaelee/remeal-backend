@@ -26,5 +26,5 @@ class UserImageMutation(graphene.Mutation):
             user_image.save()
         else:
             UserImage.objects.create(user=user, image=image)
-
+        print('upload image')
         return UserImageMutation(success=True)
